@@ -5,18 +5,25 @@ import numpy as np
 import time
 import sys
 
-iter = int(sys.argv[1])
+'''
+2opt algorithm for the traveling salesman problem
 
-#route = [x for x in range(10)]
+One parameter: the number of nodes to solve
 
+Generates a set of random nodes and finds an "optimal" tour
+
+'''
+
+#No. of nodes
+iter = int(sys.argv[1]) 
+
+#Initialize cost variable
 cost = 10**6
 
-mat = np.zeros((3,10))
-for i in range(len(mat)):
-    mat[0][i] = 1
 
-#print(mat)
+#-------CLASS-------#
 
+#Node class
 class Node:
 
     def __init__(self,x,y,id):
@@ -27,12 +34,16 @@ class Node:
     def dist(self,next):
         return ((self._x - next._x)**2+(self._y - next._y)**2)**.5
 
-
+#-------DATA-------#
+    
+#Matrix of nodes (randomly generated)
 route = []
 for i in range(iter):
     x = randint(0,100)
     y = randint(0,100)
     route.append(Node(x,y,i))
+
+#-------FUNCTIONS-------#
 
 def totalDistance(route):
     dist = 0
@@ -61,47 +72,11 @@ def optimalRoute(route):
                 cost = new_cost
     return route,cost
 
-def routeClipper(points,mat):
-    x1 = randint(0,len(mat)-1)
-    y1 = randint(0,len(mat)-1)
-    x2 = randint(0,len(mat)-1)
-    y2 = randint(0,len(mat)-1)
+#-------MAIN-------#
 
-
-    swap = mat[x1][y1]
-    mat[x1][y1] = mat[x2][y2]
-    mat[x2][y2] = swap
-
-    routes = []
-
-    for i in range(len(mat)):
-        print(len(mat))
-        tempRoute = []
-        for j in range(len(mat)):
-            if (mat[i][j]==1):
-                tempRoute.append(points[j])
-                print(points[j])
-        routes.append(tempRoute)
-
-    #print(routes)
-    return routes
-
-'''
-for i in range(1000):
-    routes = routeClipper(route,mat)
-    sumCost = 0
-    for route in routes:
-        optR,minCost = optimalRoute(route)
-        sumCost += minCost
-    print("Iterasjon",i,"Kostnad",minCost)
-
-print(routes)
-'''
 start = time.time()
 optR,minCost = optimalRoute(route)
 end = time.time()
-
-
 
 for r in optR:
     print("Steg:",r._id)
